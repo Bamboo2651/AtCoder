@@ -8,4 +8,4 @@ for i in range(len(s)):
     else:
         length += 1
     ans += length
-print(ans)
+print(ans%998244353)
