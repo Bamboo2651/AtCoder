@@ -1,22 +1,11 @@
 s = input()
-box = []
-curry = []
+ans = 0
+length = 0
 
 for i in range(len(s)):
-    curry.append(s[i])
-    
-    if i + 1 < len(s):
-        if s[i] == s[i+1]:
-            box.append(curry)
-            curry = []
+    if s[i] == s[i-1]:
+        length = 1
     else:
-        box.append(curry)
-# print(box)
-
-total = 0
-ans = 0
-for i in box:
-    n = len(i)
-    total = n * (n + 1) //2
-    ans += total
+        length += 1
+    ans += length
 print(ans)
