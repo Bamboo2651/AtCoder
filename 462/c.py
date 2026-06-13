@@ -1,3 +1,4 @@
+#間違ってます
 n = int(input())
 x = [[]]
 for _ in range(n):
