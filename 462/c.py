@@ -1,4 +1,4 @@
-#間違ってます
+#間違ってます (TLE)
 n = int(input())
 x = [[]]
 for _ in range(n):
