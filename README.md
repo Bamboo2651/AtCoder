@@ -1,86 +1,209 @@
-# AtCoder環境の使い方
+# AtCoder Command Cheat Sheet
 
-VS Codeから、問題フォルダへの移動や仮想環境の有効化をせずにサンプルテストと提出準備を実行できます。
+AtCoder作業用コマンドをすぐ確認するためのREADMEです。環境の仕組みやエラー対応は[環境解説](docs/atcoder-environment.md)を参照してください。
 
-## サンプルテスト
+## コンテストを始める
 
-1. テストしたい問題の `main.py` をVS Codeで開く
-2. `Ctrl+Shift+B` を押す
-3. ターミナルに表示される結果を確認する
-4. 全サンプルがACすると、提出方法を質問される
-5. コンテスト開催中の本番提出なら`o`、終了後の練習提出なら`p`を入力する
+AtCoderリポジトリへ移動します。
 
-何も入力せずEnter、またはそれ以外を入力した場合は中止されます。テストに失敗した場合も提出されません。
+```powershell
+cd C:\DEV\AtCoder
+```
 
-AtCoderは開催時刻によって本番提出か練習提出かを自動決定します。`o`と`p`の選択が実際の開催状況と一致しない場合は、誤操作を防ぐため提出画面を開きません。
+ログイン状態を確認します。
 
-現在のAtCoder提出フォームは古い`online-judge-tools`からの自動送信を拒否するため、コードをクリップボードへコピーし、対象問題を選択したブラウザ提出画面を開きます。ブラウザでコードを貼り付け、CPythonを選択して提出ボタンを押してください。
+```powershell
+acc session
+```
 
-開いているファイルと同じフォルダの `test` が自動的に使われます。
+コンテストフォルダを作成します。`abc467`の部分を参加するコンテストIDに変更してください。
+
+```powershell
+acc new abc467
+```
+
+現在の設定では、全問題の`main.py`とサンプルケースが自動生成されます。
 
 ```text
-abc466/
+abc467/
 ├─ contest.acc.json
-└─ a/
-   ├─ main.py       ← このファイルを開く
-   └─ test/         ← この中のサンプルでテスト
+├─ a/
+│  ├─ main.py
+│  └─ test/
+├─ b/
+│  ├─ main.py
+│  └─ test/
+└─ ...
 ```
 
-## 提出だけを実行
+VS Codeでリポジトリを開きます。
 
-1. 提出したい問題の `main.py` を開く
-2. `Ctrl+Shift+P` を押す
-3. `タスク: タスクの実行`（`Tasks: Run Task`）を選ぶ
-4. `AtCoder: 提出`を選ぶ
-5. `o`または`p`を選ぶ
-6. 開いたブラウザでコードを貼り付け、CPythonを選択して提出する
+```powershell
+code C:\DEV\AtCoder
+```
 
-提出先は、親フォルダにある `contest.acc.json` から自動的に判定されます。
+## テストと提出準備
 
-## ログインエラーが出た場合
-
-1. `Ctrl+Shift+P`を押す
-2. `タスク: タスクの実行`を選ぶ
-3. `AtCoder: ログインし直す`を選ぶ
-4. `acc`を使う処理をもう一度実行する
-
-ブラウザ提出では、開いたブラウザ側でもAtCoderへログインしてください。
-
-## 仮想環境について
-
-仮想環境を手動で有効化する必要はありません。
-
-VS Codeのタスクが、次の実行ファイルを直接呼び出します。
+テストしたい問題の`main.py`を開き、次のキーを押します。
 
 ```text
-myenv\Scripts\oj.exe
-myenv\Scripts\python.exe
+Ctrl+Shift+B
 ```
 
-そのため、`Activate.ps1`の実行は不要ですが、現在の設定では`myenv`フォルダ自体は必要です。
+全サンプルがACすると提出モードを質問されます。
 
-## 内部の仕組み
+```text
+o  コンテスト開催中の本番提出
+p  コンテスト終了後の練習提出
+Enter  キャンセル
+```
 
-- `.vscode/tasks.json`: VS Codeにテスト・提出・ログインのタスクを登録
-- `.vscode/atcoder-test.ps1`: `oj test`を実行し、成功した場合だけ提出するか確認
-- `.vscode/atcoder-submit.ps1`: 開催状況と提出先を確認し、コードをコピーしてブラウザ提出画面を開く
-- `.vscode/atcoder-contest-phase.py`: AtCoderの開催時刻から本番提出か練習提出かを判定
-- `.vscode/patch-onlinejudge-mib.ps1`: 新ジャッジの`MiB`表記に古い`online-judge-tools`を対応させる
+正しいモードを選ぶと、コードがクリップボードへコピーされ、対象問題を選択したAtCoder提出画面が開きます。ブラウザでコードを貼り付け、CPythonを選択して提出します。
 
-## よくあるエラー
+提出準備だけを実行する場合は、VS Codeで次を選びます。
 
-### `Test directory not found`
+```text
+Ctrl+Shift+P
+→ Tasks: Run Task
+→ AtCoder: 提出
+```
 
-`test`フォルダがある問題の`main.py`を開いてから、もう一度`Ctrl+Shift+B`を押します。
+## atcoder-cli
 
-### `contest.acc.json not found`
+### コンテスト作成
 
-`acc new`で作成したコンテストフォルダ内の`main.py`を開いてください。古い形式の`460/a.py`のようなファイルは、現在の提出タスクでは提出先を自動判定できません。
+```powershell
+acc new abc467
+```
 
-### `online-judge-tools not found`
+問題を選びながら作成する場合：
 
-`C:\DEV\AtCoder\myenv\Scripts\oj.exe`が存在するか確認します。
+```powershell
+acc new abc467 --choice inquire
+```
 
-### `assert parsed_memory_limit` / `AssertionError`
+サンプルをダウンロードせず作成する場合：
 
-ABC466以降の新ジャッジでメモリ制限が`MiB`表記になったことによるエラーです。提出タスクが互換修正を自動適用します。
+```powershell
+acc new abc467 --no-tests
+```
+
+Pythonテンプレートを明示する場合：
+
+```powershell
+acc new abc467 --template python
+```
+
+### 既存コンテストへ問題を追加
+
+```powershell
+cd C:\DEV\AtCoder\abc467
+acc add
+```
+
+未作成の問題をすべて追加する場合：
+
+```powershell
+acc add --choice rest
+```
+
+次の1問だけ追加する場合：
+
+```powershell
+acc add --choice next
+```
+
+### ログイン
+
+```powershell
+acc login
+acc session
+acc logout
+```
+
+### 設定確認
+
+```powershell
+acc config
+acc templates
+acc check-oj
+acc config-dir
+```
+
+現在の主要設定：
+
+```text
+default-template: python
+default-task-choice: all
+default-test-dirname-format: test
+oj-path: C:\DEV\AtCoder\myenv\Scripts\oj.exe
+```
+
+### コンテスト・問題URLを表示
+
+```powershell
+acc url abc467
+acc url abc467 abc467_a
+```
+
+## online-judge-tools
+
+通常は`Ctrl+Shift+B`を使うため、以下の手動コマンドは不要です。動作確認やトラブル調査時に使用します。
+
+```powershell
+cd C:\DEV\AtCoder\abc467\a
+C:\DEV\AtCoder\myenv\Scripts\oj.exe test -c "C:\DEV\AtCoder\myenv\Scripts\python.exe main.py"
+```
+
+バージョン確認：
+
+```powershell
+C:\DEV\AtCoder\myenv\Scripts\oj.exe --version
+C:\DEV\AtCoder\myenv\Scripts\python.exe --version
+acc --version
+```
+
+## 仮想環境
+
+手動で有効化せず、VS Codeタスクから直接利用します。調査などで有効化したい場合だけ次を実行します。
+
+```powershell
+cd C:\DEV\AtCoder
+.\myenv\Scripts\Activate.ps1
+```
+
+終了：
+
+```powershell
+deactivate
+```
+
+## Git
+
+変更確認：
+
+```powershell
+git status
+git diff
+```
+
+コミットとプッシュ：
+
+```powershell
+git add <ファイル>
+git commit -m "変更内容"
+git push
+```
+
+最新状態を取得：
+
+```powershell
+git pull --ff-only
+```
+
+## 詳細
+
+- [AtCoder環境の仕組みとトラブル対応](docs/atcoder-environment.md)
+- [VS Codeタスク](.vscode/tasks.json)
+- [テストスクリプト](.vscode/atcoder-test.ps1)
+- [提出準備スクリプト](.vscode/atcoder-submit.ps1)
