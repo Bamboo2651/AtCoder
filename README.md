@@ -1,5 +1,20 @@
 # AtCoder環境の使い方
 
+## コンテストが始まったら
+
+VS Codeで `C:\DEV\AtCoder` を開いたまま、ターミナルで次のコマンドを実行します。`abcXXX` は参加するコンテストID（例: `abc471`）に置き換えてください。
+
+```powershell
+cd C:\DEV\AtCoder
+acc new abcXXX
+```
+
+`acc new` はPCにグローバルインストールされた `acc` を使うため、実行前に仮想環境を有効化する必要はありません。ただし、`Ctrl+Shift+B` のサンプルテストでは `myenv\Scripts\oj.exe`、提出準備では `myenv\Scripts\python.exe` を使うため、`myenv` フォルダ自体は必要です。
+
+問題を選ぶ画面が表示されたら、解く問題を選択します。作成された `abcXXX\a\main.py` などを開いてコードを書き、`Ctrl+Shift+B` でサンプルテストと提出準備を実行します。
+
+`C:\DEV\AtCoder` のVS Codeウィンドウをそのまま使ってください。作成された `abcXXX` フォルダだけを別のVS Codeウィンドウで開くと、このリポジトリのテスト・提出タスクを利用できません。
+
 VS Codeから、問題フォルダへの移動や仮想環境の有効化をせずにサンプルテストと提出準備を実行できます。
 
 ## サンプルテスト
