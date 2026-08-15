@@ -1,0 +1,8 @@
+{
+  "task": {
+    "submit": "main.py",
+    "program": [
+      "main.py"
+    ]
+  }
+}

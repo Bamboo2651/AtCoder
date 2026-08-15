@@ -1,19 +1,40 @@
 # AtCoder環境の使い方
 
-## コンテストが始まったら
+## 別のPCで最初に行うセットアップ
 
-VS Codeで `C:\DEV\AtCoder` を開いたまま、ターミナルで次のコマンドを実行します。`abcXXX` は参加するコンテストID（例: `abc471`）に置き換えてください。
+このリポジトリをクローンしただけでは、PC固有の `acc`、Python仮想環境、AtCoderログイン情報は引き継がれません。Node.jsとPythonをインストールしたうえで、クローン先のPowerShellから次を1回実行します。
 
 ```powershell
-cd C:\DEV\AtCoder
+git clone https://github.com/takehiro-2006/AtCoder.git
+cd AtCoder
+powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1
+acc login
+```
+
+`setup-atcoder.ps1`は、次の環境をこのPCに作成します。
+
+- `atcoder-cli` v2.2.0をグローバルインストール
+- リポジトリ内に `myenv` を作成
+- `online-judge-tools` v11.5.1をインストール
+- `acc new`のサンプル取得先を `myenv\Scripts\oj.exe` に設定
+- コンテストの全問題、`test`フォルダ、空の`main.py`を自動作成する設定を適用
+
+AtCoderのログインCookieはGitHubへ保存しません。`acc login`はPCごとに実行してください。`myenv`もGitHubへは保存せず、セットアップスクリプトから各PCで作り直します。
+
+## コンテストが始まったら
+
+VS CodeでクローンしたAtCoderリポジトリを開いたまま、ターミナルで次のコマンドを実行します。`abcXXX` は参加するコンテストID（例: `abc471`）に置き換えてください。
+
+```powershell
+cd <AtCoderリポジトリのパス>
 acc new abcXXX
 ```
 
 `acc new` はPCにグローバルインストールされた `acc` を使うため、実行前に仮想環境を有効化する必要はありません。ただし、`Ctrl+Shift+B` のサンプルテストでは `myenv\Scripts\oj.exe`、提出準備では `myenv\Scripts\python.exe` を使うため、`myenv` フォルダ自体は必要です。
 
-問題を選ぶ画面が表示されたら、解く問題を選択します。作成された `abcXXX\a\main.py` などを開いてコードを書き、`Ctrl+Shift+B` でサンプルテストと提出準備を実行します。
+現在の設定では全問題が自動的に作成されます。作成された `abcXXX\a\main.py` などを開いてコードを書き、`Ctrl+Shift+B` でサンプルテストと提出準備を実行します。
 
-`C:\DEV\AtCoder` のVS Codeウィンドウをそのまま使ってください。作成された `abcXXX` フォルダだけを別のVS Codeウィンドウで開くと、このリポジトリのテスト・提出タスクを利用できません。
+AtCoderリポジトリ全体を開いたVS Codeウィンドウをそのまま使ってください。作成された `abcXXX` フォルダだけを別のVS Codeウィンドウで開くと、このリポジトリのテスト・提出タスクを利用できません。
 
 VS Codeから、問題フォルダへの移動や仮想環境の有効化をせずにサンプルテストと提出準備を実行できます。
 
@@ -94,7 +115,7 @@ myenv\Scripts\python.exe
 
 ### `online-judge-tools not found`
 
-`C:\DEV\AtCoder\myenv\Scripts\oj.exe`が存在するか確認します。
+リポジトリ内の `myenv\Scripts\oj.exe` が存在するか確認します。存在しない場合は、リポジトリ直下で `powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1` を実行します。
 
 ### `assert parsed_memory_limit` / `AssertionError`
 
