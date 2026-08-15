@@ -65,6 +65,8 @@ powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1
 
 最後に `[AtCoder] Local setup completed.` と表示されれば完了です。仮想環境を手動で有効化する必要はありません。
 
+`myenv`はGitHubでは共有せず、各PCで同じ名前の仮想環境を個別に作成します。Python仮想環境には作成元PCの絶対パスが含まれるため、中身をPC間で共有することはできません。別PC由来で起動できない`myenv`が見つかった場合、スクリプトはそれを`myenv-broken-日時`へ退避してから、このPC用の`myenv`を作成します。
+
 ## 5. ブラウザのログインCookieを`acc`へ登録する
 
 AtCoderのログイン画面にはCloudflareの確認が導入されているため、`acc login`によるユーザー名・パスワードの自動ログインは通らないことがあります。通常のブラウザでログインし、そのブラウザに保存された `REVEL_SESSION` を専用スクリプトで`acc`へ登録します。
