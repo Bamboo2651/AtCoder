@@ -92,5 +92,6 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host ""
 Write-Host "[AtCoder] Local setup completed." -ForegroundColor Green
-Write-Host "Run 'acc login' once on this PC, then use 'acc new abcXXX' from:"
-Write-Host "  $repoRoot"
+Write-Host "Next, log in to AtCoder in your browser and register REVEL_SESSION by running:"
+Write-Host "  powershell -ExecutionPolicy Bypass -File .\set-acc-session.ps1"
+Write-Host "See SETUP.md for the browser steps."

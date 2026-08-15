@@ -48,9 +48,16 @@
       "problemMatcher": []
     },
     {
-      "label": "AtCoder: \u30ed\u30b0\u30a4\u30f3\u3057\u76f4\u3059",
-      "type": "shell",
-      "command": "acc login",
+      "label": "AtCoder: \u30ed\u30b0\u30a4\u30f3Cookie\u3092\u8a2d\u5b9a",
+      "type": "process",
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "${workspaceFolder}\\set-acc-session.ps1"
+      ],
       "presentation": {
         "reveal": "always",
         "panel": "shared",

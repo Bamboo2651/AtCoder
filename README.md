@@ -66,10 +66,15 @@ abc466/
 
 ## ログインエラーが出た場合
 
+`acc session`が `not login`になる場合は、ブラウザでAtCoderへログインし直してからCookieを再登録します。詳しい取得手順は[SETUP.mdの「ブラウザのログインCookieをaccへ登録する」](./SETUP.md#5-ブラウザのログインcookieをaccへ登録する)を参照してください。
+
+VS Codeから登録する場合は、次の順番で実行します。
+
 1. `Ctrl+Shift+P`を押す
 2. `タスク: タスクの実行`を選ぶ
-3. `AtCoder: ログインし直す`を選ぶ
-4. `acc`を使う処理をもう一度実行する
+3. `AtCoder: ログインCookieを設定`を選ぶ
+4. ブラウザからコピーした `REVEL_SESSION` のValueを貼り付ける
+5. `acc`を使う処理をもう一度実行する
 
 ブラウザ提出では、開いたブラウザ側でもAtCoderへログインしてください。
 
@@ -88,7 +93,8 @@ myenv\Scripts\python.exe
 
 ## 内部の仕組み
 
-- `.vscode/tasks.json`: VS Codeにテスト・提出・ログインのタスクを登録
+- `.vscode/tasks.json`: VS Codeにテスト・提出・ログインCookie設定のタスクを登録
+- `set-acc-session.ps1`: ブラウザの `REVEL_SESSION` を画面へ表示せずに`acc`へ登録
 - `.vscode/atcoder-test.ps1`: `oj test`を実行し、成功した場合だけ提出するか確認
 - `.vscode/atcoder-submit.ps1`: 開催状況と提出先を確認し、コードをコピーしてブラウザ提出画面を開く
 - `.vscode/atcoder-contest-phase.py`: AtCoderの開催時刻から本番提出か練習提出かを判定

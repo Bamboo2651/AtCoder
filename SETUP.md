@@ -65,21 +65,51 @@ powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1
 
 最後に `[AtCoder] Local setup completed.` と表示されれば完了です。仮想環境を手動で有効化する必要はありません。
 
-## 5. AtCoderへログインする
+## 5. ブラウザのログインCookieを`acc`へ登録する
 
-同じPowerShellで次を実行し、表示に従ってAtCoderのユーザー名とパスワードを入力します。
+AtCoderのログイン画面にはCloudflareの確認が導入されているため、`acc login`によるユーザー名・パスワードの自動ログインは通らないことがあります。通常のブラウザでログインし、そのブラウザに保存された `REVEL_SESSION` を専用スクリプトで`acc`へ登録します。
+
+### 5-1. ブラウザでAtCoderへログインする
+
+ChromeまたはEdgeで[AtCoderのログインページ](https://atcoder.jp/login)を開き、普段どおりログインします。ログイン後にAtCoderのホーム画面が表示されることを確認してください。
+
+### 5-2. `REVEL_SESSION`をコピーする
+
+1. AtCoderを開いたタブで `F12` を押す
+2. 開発者ツール上部の「Application」を開く
+3. 左側の「Storage」→「Cookies」→`https://atcoder.jp`を開く
+4. Cookie一覧から `REVEL_SESSION` を選ぶ
+5. `Value`列の値だけをコピーする
+
+「Application」が見つからない場合は、開発者ツール上部の `>>` を押すと表示されます。
+
+`REVEL_SESSION`はログイン中のアカウントを操作できる秘密情報です。チャット、GitHub、スクリーンショットへ載せないでください。
+
+### 5-3. 専用スクリプトへ貼り付ける
+
+AtCoderリポジトリ直下のPowerShellで次を実行します。
 
 ```powershell
-acc login
+powershell -ExecutionPolicy Bypass -File .\set-acc-session.ps1
 ```
 
-ログインできたことを確認します。
+`REVEL_SESSION value:` と表示されたら、先ほどコピーした値を貼り付けてEnterを押します。入力内容は画面には表示されません。このスクリプトは、そのPCの`atcoder-cli`設定フォルダにある `session.json` のログインCookieを置き換えます。
+
+最後に次のように表示されれば登録成功です。
+
+```text
+check login status...
+OK
+[AtCoder] The login cookie was registered for acc.
+```
+
+念のため、もう一度確認できます。
 
 ```powershell
 acc session
 ```
 
-`OK`と表示されればログイン済みです。AtCoderのログインCookieはGitHubへ保存されないため、PCごとにこの操作が必要です。
+`OK`と表示されればログイン済みです。CookieはGitHubへ保存されないため、PCごとにこの操作が必要です。また、Cookieの期限が切れた場合も同じ手順で新しい値を登録します。
 
 ## 6. `acc`の設定を確認する
 
@@ -121,9 +151,13 @@ PowerShellを開き直してから、もう一度 `acc --version` を実行し�
 
 ```powershell
 acc.cmd --version
-acc.cmd login
+acc.cmd session
 acc.cmd new abcXXX
 ```
+
+### `acc login`が`login failed`になる
+
+パスワードを繰り返し入力せず、「5. ブラウザのログインCookieを`acc`へ登録する」の手順を実行してください。AtCoder側のCloudflare確認により、`acc login`の自動ログインが失敗する場合があります。
 
 ### `py`または`python`が見つからない
 
