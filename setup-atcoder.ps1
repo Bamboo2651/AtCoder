@@ -31,10 +31,29 @@ function Get-RequiredCommand {
 $npmCommand = Get-RequiredCommand -Name @("npm.cmd", "npm") -InstallHint "Install Node.js, restart PowerShell, and run this script again."
 $pythonLauncher = Get-RequiredCommand -Name @("py.exe", "py", "python.exe", "python") -InstallHint "Install Python for Windows, restart PowerShell, and run this script again."
 
+# A virtual environment contains absolute paths to the Python installation that
+# created it, so it cannot be shared between PCs.  Avoid accidentally selecting
+# the repository's own (possibly broken) virtual-environment launcher as the
+# system Python used to recreate it.
+if ($pythonLauncher.Source.StartsWith($venvRoot, [System.StringComparison]::OrdinalIgnoreCase)) {
+    throw "Only the repository-local myenv Python was found. Install Python 3 for this PC, restart PowerShell, and run this script again."
+}
+
 Write-Host "[AtCoder] Installing atcoder-cli 2.2.0 globally." -ForegroundColor Cyan
 & $npmCommand.Source install --global atcoder-cli@2.2.0
 if ($LASTEXITCODE -ne 0) {
     throw "Failed to install atcoder-cli."
+}
+
+if (Test-Path -LiteralPath $venvPython -PathType Leaf) {
+    & $venvPython -c "import sys; print(sys.executable)" *> $null
+    if ($LASTEXITCODE -ne 0) {
+        $backupName = "myenv-broken-{0}" -f (Get-Date -Format "yyyyMMdd-HHmmss")
+        $backupPath = Join-Path $repoRoot $backupName
+        Write-Host "[AtCoder] The existing myenv belongs to another or missing Python installation." -ForegroundColor Yellow
+        Write-Host "[AtCoder] Moving it to: $backupPath" -ForegroundColor Yellow
+        Move-Item -LiteralPath $venvRoot -Destination $backupPath
+    }
 }
 
 if (-not (Test-Path -LiteralPath $venvPython -PathType Leaf)) {
