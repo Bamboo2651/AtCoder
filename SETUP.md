@@ -1,6 +1,6 @@
 # 別のPCでAtCoder環境を使えるようにする手順
 
-この手順は、Windowsの別PCにこのリポジトリをcloneし、`acc new abcXXX`、サンプルテスト、提出準備を使える状態にするまでを説明します。上から順番に実行してください。
+この手順は、Windowsの新しいPCにこのリポジトリを初めてcloneし、`acc new abcXXX`、サンプルテスト、提出準備を使える状態にするまでを説明します。既存のcloneを更新する場合は対象にせず、何もない状態から上から順番に実行することを前提にしています。
 
 ## 最初に知っておくこと
 
@@ -33,7 +33,6 @@ git --version
 node --version
 npm --version
 py --version
-code --version
 ```
 
 すべてバージョンが表示されれば次へ進みます。
@@ -46,6 +45,12 @@ python --version
 
 コマンドが見つからない場合は対応するソフトをインストールし、PowerShellを閉じて開き直してから再確認します。
 
+Visual Studio Codeは、スタートメニューなどから起動できれば問題ありません。`code .`も使いたい場合は、次のコマンドでバージョンが表示されることを確認します。
+
+```powershell
+code --version
+```
+
 ## 2. リポジトリをcloneする
 
 以下は `C:\DEV\AtCoder` に配置する例です。
@@ -55,13 +60,6 @@ New-Item -ItemType Directory -Path C:\DEV -Force
 Set-Location C:\DEV
 git clone https://github.com/Bamboo2651/AtCoder.git
 Set-Location .\AtCoder
-```
-
-すでにclone済みの場合は、cloneし直さず最新版を取得します。
-
-```powershell
-Set-Location C:\DEV\AtCoder
-git pull --ff-only
 ```
 
 ## 3. cloneしたリポジトリにいることを確認する
@@ -199,45 +197,13 @@ C:\DEV\AtCoder\myenv\Scripts\oj.exe
 code .
 ```
 
+`code`コマンドを使用できない場合は、Visual Studio Codeを通常どおり起動し、「ファイル」→「フォルダーを開く」から `C:\DEV\AtCoder` を選択します。
+
 VS CodeではAtCoderリポジトリ全体を開きます。`abcXXX`などのコンテストフォルダだけを別ウィンドウで開くと、リポジトリに登録されているテスト・提出タスクを利用できません。
 
 これで別PCの初期セットアップは完了です。コンテスト開始後の操作は[README.md](./README.md)を参照してください。
 
-## 2回目以降に別PCで作業を始めるとき
-
-初回セットアップを毎回行う必要はありません。作業開始前に、ほかのPCの変更を取り込みます。
-
-```powershell
-Set-Location C:\DEV\AtCoder
-git pull --ff-only
-code .
-```
-
-その後、実際のコンテストIDを指定して`acc new`を実行します。
-
-```powershell
-acc new abcXXX
-```
-
 ## トラブルが起きた場合
-
-### `python.exe`が別のユーザーフォルダを参照している
-
-次のように、存在しない別PCのパスが表示される場合があります。
-
-```text
-did not find executable at 'C:\Users\別のユーザー\...\python.exe'
-```
-
-これは、別PCで作成した`myenv`が残っている状態です。削除せずリポジトリの外へ退避し、このPC用に作り直します。
-
-```powershell
-Set-Location C:\DEV\AtCoder
-Move-Item .\myenv ..\myenv-other-pc-backup
-powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1
-```
-
-セットアップ成功後も、退避したフォルダは自動削除されません。不要であることを確認できるまではそのまま残します。
 
 ### `acc login`が`login failed`になる
 
