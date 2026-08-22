@@ -28,4 +28,4 @@ acc new abcXXX
 
 ## ログイン切れの場合
 
-`acc session`が`not login`になった場合は、[SETUP.md](./SETUP.md)の「AtCoderのログイン情報を登録する」をもう一度行ってください。
+`acc session`が`not login`になった場合や、開催中の問題でテストケースを取得できない場合は、[SETUP.md](./SETUP.md)の「accとojにAtCoderのログイン情報を登録する」をもう一度行ってください。
