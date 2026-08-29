@@ -32,7 +32,7 @@ $pythonCommand = '"' + $pythonPath + '" -u "' + $sourceFile.FullName + '"'
 Push-Location $problemDirectory
 try {
     Write-Host "[AtCoder] Running sample tests for $($sourceFile.FullName)" -ForegroundColor Cyan
-    & $ojPath test -c $pythonCommand
+    & $ojPath test -N -c $pythonCommand
     $testExitCode = $LASTEXITCODE
 
     if ($testExitCode -ne 0) {
