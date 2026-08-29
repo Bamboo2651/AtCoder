@@ -28,6 +28,43 @@ function Get-RequiredCommand {
     throw "Required command not found: $($Name -join ', '). $InstallHint"
 }
 
+function Set-RepositoryTemplateJunction {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Source,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Destination
+    )
+
+    $sourceItem = Get-Item -LiteralPath $Source -Force
+    $sourcePath = $sourceItem.FullName
+
+    if (Test-Path -LiteralPath $Destination) {
+        $destinationItem = Get-Item -LiteralPath $Destination -Force
+        $isJunction = ($destinationItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) -ne 0
+
+        if ($isJunction) {
+            $currentTarget = [System.IO.Path]::GetFullPath([string]$destinationItem.Target)
+            if ($currentTarget.Equals($sourcePath, [System.StringComparison]::OrdinalIgnoreCase)) {
+                Write-Host "[AtCoder] The repository template junction is already configured." -ForegroundColor DarkGray
+                return
+            }
+
+            Write-Host "[AtCoder] Replacing the existing template junction: $Destination" -ForegroundColor Yellow
+            Remove-Item -LiteralPath $Destination -Force
+        }
+        else {
+            $backupPath = "{0}.backup-{1}" -f $Destination, (Get-Date -Format "yyyyMMdd-HHmmss")
+            Write-Host "[AtCoder] Backing up the existing local template to: $backupPath" -ForegroundColor Yellow
+            Move-Item -LiteralPath $Destination -Destination $backupPath
+        }
+    }
+
+    New-Item -ItemType Junction -Path $Destination -Target $sourcePath | Out-Null
+    Write-Host "[AtCoder] Linked the atcoder-cli template to: $sourcePath" -ForegroundColor Cyan
+}
+
 $npmCommand = Get-RequiredCommand -Name @("npm.cmd", "npm") -InstallHint "Install Node.js, restart PowerShell, and run this script again."
 $pythonLauncher = Get-RequiredCommand -Name @("py.exe", "py", "python.exe", "python") -InstallHint "Install Python for Windows, restart PowerShell, and run this script again."
 
@@ -100,9 +137,7 @@ if ([string]::IsNullOrWhiteSpace($configDirectory)) {
 }
 
 $templateDestination = Join-Path $configDirectory "python"
-New-Item -ItemType Directory -Path $templateDestination -Force | Out-Null
-Copy-Item -LiteralPath (Join-Path $templateSource "main.py") -Destination (Join-Path $templateDestination "main.py") -Force
-Copy-Item -LiteralPath (Join-Path $templateSource "template.json") -Destination (Join-Path $templateDestination "template.json") -Force
+Set-RepositoryTemplateJunction -Source $templateSource -Destination $templateDestination
 
 & $accPath check-oj
 if ($LASTEXITCODE -ne 0) {

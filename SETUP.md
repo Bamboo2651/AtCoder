@@ -28,6 +28,7 @@ powershell -ExecutionPolicy Bypass -File .\setup-atcoder.ps1
 
 `[AtCoder] Local setup completed.` と表示されれば成功です。
 仮想環境を手動で有効化する必要はありません。
+`acc new`のPythonテンプレートは、リポジトリ内の`atcoder-cli-template\python`へ直接リンクされます。
 
 ## 4. accとojにAtCoderのログイン情報を登録する
 
