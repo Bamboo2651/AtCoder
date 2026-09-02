@@ -22,3 +22,18 @@ for _ in range(q):
 #     num = 0
 #     print(min(select))
 
+select = []
+for num in range(n):
+    select.append((a[num], num + 1))
+
+select.sort()
+# print(select)
+# select = select[:6]
+# print(select)
+
+for i in range(q):
+    b = q_box[i][1]
+    for j in range(len(select)):
+        if select[j][1] not in b:
+            print(select[j][0])
+            break
