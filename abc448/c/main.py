@@ -10,13 +10,15 @@ for _ in range(q):
     q_box.append(query)
 # print(q_box)
 
-for i in range(q):
-    b = q_box[i][1]
-    num = 0
-    select = []
-    for i in a:
-        num += 1
-        if num not in b:
-            select.append(i)
-    num = 0
-    print(min(select))
+# tleコード
+# for i in range(q):
+#     b = q_box[i][1]
+#     num = 0
+#     select = []
+#     for i in a:
+#         num += 1
+#         if num not in b:
+#             select.append(i)
+#     num = 0
+#     print(min(select))
+
