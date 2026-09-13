@@ -1,0 +1,20 @@
+{
+  "contest": {
+    "id": "ahc071",
+    "title": "AtCoder Heuristic Contest 071",
+    "url": "https://atcoder.jp/contests/ahc071"
+  },
+  "tasks": [
+    {
+      "id": "ahc071_a",
+      "label": "A",
+      "title": "Brick Cover",
+      "url": "https://atcoder.jp/contests/ahc071/tasks/ahc071_a",
+      "directory": {
+        "path": "a",
+        "testdir": "test",
+        "submit": "main.py"
+      }
+    }
+  ]
+}
