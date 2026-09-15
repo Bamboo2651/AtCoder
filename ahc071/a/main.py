@@ -1,15 +1,18 @@
-w,h,k = map(int,input().split())
-c = list(map(int,input().split()))
-box = [[0,0] for _ in range(k)]
-for i in range(k):
-    a,b = map(int,input().split())
-    box[i][0] = a
-    box[i][1] = b
+w, h, k = map(int,input().split())
+cn = map(int,input().split())
+holes = [list(map(int,input().split())) for _ in range(k)]
 
-hole = set((x,y) for x,y in box)
-# print(hole)
-
+renga_count = 0
 renga = []
-place = set()
+for i in range(8):
+    for j in range(h):
+        if i < 6:
+            renga.append((i*9,j,9))
+            renga_count += 1
+        else:
+            renga.append((54+(i-6)*3,j,3))
+            renga_count += 1
 
-for x,y in sorted(holes, )
+print(renga_count)
+for i in range(renga_count):
+    print(*renga[i])
